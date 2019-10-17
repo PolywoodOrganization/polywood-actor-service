@@ -1,2 +1,2 @@
-# polywood-actor-service
-Polywood actors webservice
+# polywood-film-service
+First webservice for Polywood application
