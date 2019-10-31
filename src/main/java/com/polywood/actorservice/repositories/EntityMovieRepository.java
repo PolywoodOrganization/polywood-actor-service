@@ -2,16 +2,14 @@ package com.polywood.actorservice.repositories;
 
 
 import com.polywood.actorservice.model.MoviesEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 
 @Repository
-public interface EntityMovieRepository extends JpaRepository<MoviesEntity, Integer> {
+public interface EntityMovieRepository extends PagingAndSortingRepository<MoviesEntity, Integer> {
 
-    public List<MoviesEntity> findAll();
-    public MoviesEntity findByImdbId(String imdbId);
+    public MoviesEntity findByMovieid(String movieid);
+
 }
 
