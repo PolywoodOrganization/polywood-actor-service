@@ -15,4 +15,6 @@ public interface EntityActorRepository extends PagingAndSortingRepository<Actors
 
     public List<ActorsEntity> findActorsEntitiesByActorid(Integer actorid);
 
+    public ActorsEntity findByActorid(Integer actorid);
+
 }

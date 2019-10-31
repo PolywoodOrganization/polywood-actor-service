@@ -13,6 +13,6 @@ public interface EntityCastingRepository extends PagingAndSortingRepository<Cast
 
     public Page<CastingEntity> findAll(Pageable pageable);
 
-    public List<CastingEntity> findCastingEntitiesByMovieid(String movieid);
+    public List<CastingEntity> findCastingEntitiesByActorid(Integer actorid);
 
 }
