@@ -1,11 +1,6 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.4
+-- version 4.7.0
 -- https://www.phpmyadmin.net/
---
--- Hôte : 127.0.0.1
--- Généré le :  jeu. 17 oct. 2019 à 11:25
--- Version du serveur :  10.1.37-MariaDB
--- Version de PHP :  7.3.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -4800,6 +4795,27 @@ INSERT INTO `movies` (`movieid`, `title`, `releaseyear`, `releasedate`, `genre`,
 ('tt4219300', 'Gollu aur Pappu', 2014, '21 Nov 2014', 'Comedy', 'N/A', 'Vir Das | Sandeepa Dhar | Rahul Handa | Dimple Kapadia', 'Kabir Sadanand'),
 ('tt4228746', 'Zid', 2014, '28 Nov 2014', 'Thriller', 'Vivek Agnihotri | Rohit Malhotra', 'Shradha Das | Mohan Kapoor | Mannara | Karanvir Sharma', 'Rohit Malhotra | Anubhav Sinha');
 
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `users`
+--
+
+CREATE TABLE `users` (
+  `idUser` int(25) NOT NULL,
+  `login` varchar(25) NOT NULL,
+  `password` varchar(70) NOT NULL,
+  `firstname` varchar(25) NOT NULL,
+  `lastname` varchar(25) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `users`
+--
+
+INSERT INTO `users` (`idUser`, `login`, `password`, `firstname`, `lastname`) VALUES
+(1, 'Lea', '2BB80D537B1DA3E38BD30361AA855686BDE0EACD7162FEF6A25FE97BF527A25B', 'Léa', 'Chemoul');
+
 --
 -- Index pour les tables déchargées
 --
@@ -4824,6 +4840,21 @@ ALTER TABLE `movies`
   ADD PRIMARY KEY (`movieid`);
 
 --
+-- Index pour la table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`idUser`);
+
+--
+-- AUTO_INCREMENT pour les tables déchargées
+--
+
+--
+-- AUTO_INCREMENT pour la table `users`
+--
+ALTER TABLE `users`
+  MODIFY `idUser` int(25) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
 -- Contraintes pour les tables déchargées
 --
 
@@ -4832,7 +4863,10 @@ ALTER TABLE `movies`
 --
 ALTER TABLE `casting`
   ADD CONSTRAINT `casting_ibfk_1` FOREIGN KEY (`actorid`) REFERENCES `actors` (`actorid`),
-  ADD CONSTRAINT `casting_ibfk_2` FOREIGN KEY (`actorid`) REFERENCES `actors` (`actorid`);
+  ADD CONSTRAINT `casting_ibfk_2` FOREIGN KEY (`actorid`) REFERENCES `actors` (`actorid`),
+  ADD CONSTRAINT `casting_ibfk_3` FOREIGN KEY (`movieid`) REFERENCES `movies` (`movieid`),
+  ADD CONSTRAINT `casting_ibfk_4` FOREIGN KEY (`movieid`) REFERENCES `movies` (`movieid`),
+  ADD CONSTRAINT `casting_ibfk_5` FOREIGN KEY (`movieid`) REFERENCES `movies` (`movieid`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
