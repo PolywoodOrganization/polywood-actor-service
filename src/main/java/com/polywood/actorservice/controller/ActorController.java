@@ -10,6 +10,7 @@ import com.polywood.actorservice.repositories.EntityMovieRepository;
 import com.polywood.actorservice.tools.OffsetBasedPageRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
@@ -44,17 +45,14 @@ public class ActorController {
     @ResponseBody
     public List<ActorsEntity> findAllActorsPaged(
             @RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size, @RequestParam("sort") Optional<String> sort) {
-        Pageable offsetBasedPageRequest =
-                new OffsetBasedPageRequest(
-                        page.orElse(0),
-                        size.orElse(Integer.MAX_VALUE),
-                        Sort.by(sort.orElse("name")));
 
-        System.out.println(offsetBasedPageRequest.toString());
+        Pageable pageable =
+                PageRequest.of(page.orElse(0), size.orElse(Integer.MAX_VALUE), Sort.by(sort.orElse("name")));
+
         Page<ActorsEntity> actors = null;
 
         try {
-            actors = anEntityActorRepository.findAll(offsetBasedPageRequest);
+            actors = anEntityActorRepository.findAll(pageable);
         } catch (Exception e) {
             e.printStackTrace();
             ResponseEntity.notFound().build();

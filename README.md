@@ -1,3 +1,3 @@
-# polywood-film-service
+# polywood-actor-service
 
 - [API documentation](API.md)
