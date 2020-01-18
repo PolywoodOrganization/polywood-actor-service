@@ -64,6 +64,22 @@ public class ActorController {
 
         return Objects.requireNonNull(actors).getContent();
     }
+    
+    @RequestMapping(value = "/maxPage", method = GET)
+    public int getAllActorsPages(@RequestParam("size") Optional<Integer> size) {
+        Pageable pageable = PageRequest.of(0, size.orElse(Integer.MAX_VALUE));
+        Page<ActorsEntity> actors = null;
+        try {
+            actors = anEntityActorRepository.findAll(pageable);
+        } catch (Exception e) {
+            ResponseEntity.notFound().build();
+        }
+        
+        if(actors == null)
+            ResponseEntity.notFound().build();
+        
+        return Objects.requireNonNull(actors).getTotalPages();
+    }
 
     @GetMapping("/{id}")
     public ActorsEntity getActorById(@PathVariable(value = "id") Integer id) {
