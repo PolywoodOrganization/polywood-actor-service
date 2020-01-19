@@ -65,12 +65,15 @@ public class ActorController {
         return Objects.requireNonNull(actors).getContent();
     }
     
-    @RequestMapping(value = "/maxPage", method = GET)
-    public int getAllActorsPages(@RequestParam("size") Optional<Integer> size) {
-        Pageable pageable = PageRequest.of(0, size.orElse(Integer.MAX_VALUE));
+    @RequestMapping(value = "/maxPage/{size}", method = GET)
+    public int getAllActorsPages(@PathVariable("size") Integer size, @RequestParam("search") Optional<String> search) {
+        Pageable pageable = PageRequest.of(0, size);
         Page<ActorsEntity> actors = null;
         try {
-            actors = anEntityActorRepository.findAll(pageable);
+            if (search.isPresent())
+                actors = anEntityActorRepository.findActorsByName(search.get().replace("+"," "), pageable);
+            else
+                actors = anEntityActorRepository.findAll(pageable);
         } catch (Exception e) {
             ResponseEntity.notFound().build();
         }
