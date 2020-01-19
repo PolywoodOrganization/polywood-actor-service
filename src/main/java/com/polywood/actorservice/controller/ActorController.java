@@ -96,5 +96,23 @@ public class ActorController {
 
         return moviesEntities;
     }
-
+    
+    @GetMapping("/name/{name}")
+    public List<ActorsEntity> getActorsByName(@PathVariable(value = "name") String name,
+                                               @RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size, @RequestParam("sort") Optional<String> sort) {
+        Pageable pageable =
+                PageRequest.of(page.orElse(0), size.orElse(Integer.MAX_VALUE), Sort.by(sort.orElse("name")));
+        
+        Page<ActorsEntity> actors = null;
+        try {
+            actors = anEntityActorRepository.findActorsByName(name.replace("+"," "), pageable);
+        } catch (Exception e) {
+            ResponseEntity.notFound().build();
+        }
+        
+        if(actors == null)
+            ResponseEntity.notFound().build();
+        
+        return Objects.requireNonNull(actors).getContent();
+    }
 }
