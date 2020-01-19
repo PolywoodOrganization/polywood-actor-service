@@ -64,6 +64,25 @@ public class ActorController {
 
         return Objects.requireNonNull(actors).getContent();
     }
+    
+    @RequestMapping(value = "/maxPage/{size}", method = GET)
+    public int getAllActorsPages(@PathVariable("size") Integer size, @RequestParam("search") Optional<String> search) {
+        Pageable pageable = PageRequest.of(0, size);
+        Page<ActorsEntity> actors = null;
+        try {
+            if (search.isPresent())
+                actors = anEntityActorRepository.findActorsByName(search.get().replace("+"," "), pageable);
+            else
+                actors = anEntityActorRepository.findAll(pageable);
+        } catch (Exception e) {
+            ResponseEntity.notFound().build();
+        }
+        
+        if(actors == null)
+            ResponseEntity.notFound().build();
+        
+        return Objects.requireNonNull(actors).getTotalPages();
+    }
 
     @GetMapping("/{id}")
     public ActorsEntity getActorById(@PathVariable(value = "id") Integer id) {
@@ -80,5 +99,23 @@ public class ActorController {
 
         return moviesEntities;
     }
-
+    
+    @GetMapping("/name/{name}")
+    public List<ActorsEntity> getActorsByName(@PathVariable(value = "name") String name,
+                                               @RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size, @RequestParam("sort") Optional<String> sort) {
+        Pageable pageable =
+                PageRequest.of(page.orElse(0), size.orElse(Integer.MAX_VALUE), Sort.by(sort.orElse("name")));
+        
+        Page<ActorsEntity> actors = null;
+        try {
+            actors = anEntityActorRepository.findActorsByName(name.replace("+"," "), pageable);
+        } catch (Exception e) {
+            ResponseEntity.notFound().build();
+        }
+        
+        if(actors == null)
+            ResponseEntity.notFound().build();
+        
+        return Objects.requireNonNull(actors).getContent();
+    }
 }
